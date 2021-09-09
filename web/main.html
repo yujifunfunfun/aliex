@@ -10,11 +10,37 @@
 <body class="px-3 pt-3">
     <h2 class="mb-3">BUYMA購入期限編集</h2>
     <div class="mb-4">
-        <p class="mb-1">変更後の日付</p>
-        <input type="number" id="month" class="mb-3 mr-2" placeholder="9" min='0' max='12'></input>月
+        <p class="mb-1">キーワード</p>
+        <input type="text" id="keyword" class="mb-3 mr-2"></input>
         <br>
-        <input type="number" id="day" class="mb-3 mr-2" placeholder="19" min='0' max='31'></input>日
+        <p class="mb-1">除外キーワード</p>
+        <input type="text" id="delete_keyword" class="mb-3 mr-2"></input>
         <br>
+        <p class="mb-1">カテゴリ</p>
+        <input type="text" id="category" class="mb-3 mr-2"></input>
+        <br>
+        <p class="mb-1">価格</p>
+        <input type="number" id="min_price" placeholder='min' class="mb-3 mr-2"></input>-
+        <input type="number" id="max_price" placeholder='max' class="mb-3 mr-2"></input>
+        <br>
+        <input type="radio" id="free_shipping" value="free">無料配送
+        <input type="radio" id="free_shipping" value="" checked="checked" style="display:none;" />
+        <br>
+        <input type="radio" id="star" name="star" value="star">評価4以上
+        <input type="radio" id="star" name="star" value="" checked="checked" style="display:none;" />
+        <br>
+        <p class="mb-1">販売数</p>
+        <input type="number" id="min_sales_count" placeholder='min' class="mb-3 mr-2"></input>-
+        <input type="number" id="max_sales_count" placeholder='max' class="mb-3 mr-2"></input>
+        <br>
+        <p class="mb-1">在庫数</p>
+        <input type="number" id="min_stock_count" placeholder='min' class="mb-3 mr-2"></input>-
+        <input type="number" id="max_stock_count" placeholder='max' class="mb-3 mr-2"></input>
+        <br>
+        <input type="radio" id="shipping_japan" value="日本発送可能">日本発送可能
+        <input type="radio" id="shipping_japan" value="" checked="checked" style="display:none;" />
+        <br>
+
         <button id="search" class="bg-primary text-white border-primary rounded-pill">実行</button>
     </div>
     <div>

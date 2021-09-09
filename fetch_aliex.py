@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 import eel
 import time
 from logger import *
@@ -80,23 +81,64 @@ def fetch_item_data(category,keyword,delete_keyword,min_price,max_price,free_del
         item_lists = driver.find_elements_by_class_name("_2mXVg")
 
         # 販売個数取得
-        sales_figures_lists = driver.find_elements_by_class_name("_2i3yA")
         sales_counts_lists = []
-        for sales_figures in sales_figures_lists:
-            sales_figures = sales_figures.text
-            p = r'(.*) 個販売'
-            sales_figures = re.search(p, sales_figures).group(1)
-            sales_counts_lists.append(int(sales_figures))
+        item_contents = driver.find_elements_by_class_name("_1OUGS")
+        for item_content in item_contents:
+            if item_content.find_element_by_class_name('_2i3yA'):
+                sales_count = item_content.text
+                p = r'(.*) 個販売'
+                sales_count = re.search(p, sales_count).group(1)
+                sales_counts_lists.append(int(sales_count))
+            else:
+                sales_counts_lists.append(0)
         
         for item,sales_counts in zip(item_lists,sales_counts_lists):
             # 価格と除外キーワードで絞り込み
             if min_sales_figures <= sales_counts <= max_sales_figures and len([i for i in delete_keyword_list if i in item.text]) == 0:
                 item_url = item.get_attribute("href")
                 driver.get(item_url)
+
+                stock = driver.find_elements_by_class_name('product-quantity-tip').text
+                o = r'(.*) 部分'
+                item_min_price = int(re.search(p, item_price).group(1))
+
                 item_title = driver.find_elements_by_class_name("product-title-text").text
-                item_min_price = 
-                item_max_price = 
-                postage = 
+                try:
+                    item_price = driver.find_elements_by_class_name('uniform-banner-box-price').text
+                except:
+                    item_price = driver.find_elements_by_class_name('product-price-current').text
+
+                if '-' in item_price:
+                    p = r'￥ (.*) -'
+                    q = r'- (.*)'
+                    item_min_price = int(re.search(p, item_price).group(1))
+                    item_max_price = int(re.search(q, item_price).group(1))
+                else:
+                    s = r'￥ (.*)'
+                    item_price = re.search(s, item_price).group(1)
+
+                product_shipping_price = driver.find_element_by_class_name('product-shipping-price').text
+                if '￥'in product_shipping_price:
+                    t = r'￥ (.*)'
+                    shipping_price = int(re.search(t, product_shipping_price).group(1))
+                else:
+                    shipping_price = 0
+
+                # 価格＋送料
+                item_min_price_add_shipping = item_min_price + shipping_price
+                item_max_price_add_shipping = item_max_price + shipping_price
+                # 商品明細
+                item_detail_list =[]
+                item_details = driver.find_elements_by_class_name('product-prop')
+                for item_detail in item_details:
+                    item_detail_list.append(item_detail.text)
+                
+
+
+
+
+
+                
 
 
 
